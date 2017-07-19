@@ -5,7 +5,7 @@ and the program can read from or write to certain places on the tape.
 There are two concepts that we need to know:  
 - *address*, an integer that specifies a place on the tape
 - *data*, the byte stored in each place on the tape
-![addressData](https://github.com/Youcheng/ServerTuning/blob/master/Memory/addressData.png)
+![addressData](https://github.com/Youcheng/ServerTuning/blob/master/Memory/pictures/addressData.png)
 
 
 executable
@@ -37,7 +37,7 @@ virtual memory space for concurrent processeses
     This is a memory address space that is isolated from other processes. 
     This means that a process can access its own virtual memory space, 
     but not the memory space of another process.
-![virtualMemorySpace](https://github.com/Youcheng/ServerTuning/blob/master/Memory/virtualMemorySpace.png)
+![virtualMemorySpace](https://github.com/Youcheng/ServerTuning/blob/master/Memory/pictures/virtualMemorySpace.png)
 
 
 memory segments
@@ -50,7 +50,7 @@ memory segments
     Access to these areas is not allowed, and is called a segmentation fault. 
     In such cases, the OS will typically abort the program.
      
-![memorySegments](https://github.com/Youcheng/ServerTuning/blob/master/Memory/memorySegments.png)
+![memorySegments](https://github.com/Youcheng/ServerTuning/blob/master/Memory/pictures/memorySegments.png)
 
 
 code segment
@@ -71,7 +71,7 @@ stack segment
     The stack segment contains local variables that have fixed sizes, 
     and will be automatically freed after the function ends.
     The return address is used to indicate where to continue after the function is done.
-![callStackAnimation](https://github.com/Youcheng/ServerTuning/blob/master/Memory/callStackAnimation.gif)
+![callStackAnimation](https://github.com/Youcheng/ServerTuning/blob/master/Memory/pictures/callStackAnimation.gif)
 
 
 heap segment
@@ -87,7 +87,7 @@ physical memory and address
     The starting address of physical memory is assigned by the computer's chipset or SoC.
     When the OS boots, it allocates some memory for itself within this physical address space, 
     and keeps the rest reserved to give to processes
-![physicalAddressMap](https://github.com/Youcheng/ServerTuning/blob/master/Memory/physicalAddressMap.png)
+![physicalAddressMap](https://github.com/Youcheng/ServerTuning/blob/master/Memory/pictures/physicalAddressMap.png)
 
 
 virtual and physical memory
@@ -100,7 +100,7 @@ virtual and physical memory
     Physical memory for each virtual memory segment can be mapped anywhere as long as the physical address is unused. 
     The order of the segments doesn't matter.
     
-![virtualPhysicalMemoryMapping](https://github.com/Youcheng/ServerTuning/blob/master/Memory/virtualPhysicalMemoryMapping.png)
+![virtualPhysicalMemoryMapping](https://github.com/Youcheng/ServerTuning/blob/master/Memory/pictures/virtualPhysicalMemoryMapping.png)
 
 
 memory page
@@ -128,7 +128,7 @@ memory page
     The OS decides the virtual addresses and sets up the page table. 
     When the CPU accesses a virtual memory address, the MMU looks up the page table to find the corresponding physical address.
     
-![virtualPhysicalPageMapping](https://github.com/Youcheng/ServerTuning/blob/master/Memory/virtualPhysicalPageMapping.png)    
+![virtualPhysicalPageMapping](https://github.com/Youcheng/ServerTuning/blob/master/Memory/pictures/virtualPhysicalPageMapping.png)    
 
 
 
