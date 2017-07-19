@@ -55,6 +55,16 @@ heap segment
     The memory manager in the standard library allocates a pool of memory in advance. 
     This is a continuous area of memory which is split up into smaller chunks for each memory allocation.
 
+virtual memory space for concurrent processeses
+-----------------------------------------------
+    Each process has a virtual memory space. 
+    This is a memory address space that is isolated from other processes. 
+    This means that a process can access its own virtual memory space, 
+    but not the memory space of another process.
+
+![virtualMemorySpace](https://github.com/Youcheng/ServerTuning/blob/master/Memory/virtualMemorySpace.png)
+
+
 
 process
 -------
@@ -71,13 +81,5 @@ context switch
 scheduling algorithm
 --------------------
 
-virtual memory space
---------------------
-    Each process has a virtual memory space. 
-    This is a memory address space that is isolated from other processes. 
-    This means that a process can access its own virtual memory space, 
-    but not the memory space of another process.
-
-![virtualMemorySpace](https://github.com/Youcheng/ServerTuning/blob/master/Memory/virtualMemorySpace.png)
     
     
