@@ -28,11 +28,20 @@ memory segments
     The areas between segments are not allocated for the running program. 
     Access to these areas is not allowed, and is called a segmentation fault. 
     In such cases, the OS will typically abort the program.
-    
-    
+     
 ![memorySegments](https://github.com/Youcheng/ServerTuning/blob/master/Memory/memorySegments.png)
 
+
+stack segment
+-------------
+    There is one stack frame per function call.
+    A stack frame consists of Arguments, Local variables,  Return address.
+    In reality, stack frames hold other information such as CPU states.
+    Since the memory layout of the stack frame is fixed, 
+    the size of variables cannot grow or shrink.
+    The return address is used to indicate where to continue after the function is done.
 ![callStackAnimation](https://github.com/Youcheng/ServerTuning/blob/master/Memory/callStackAnimation.gif)
+
 
 
 process
