@@ -1,11 +1,8 @@
 linear memory model
 -------------------
 From the point of view of a running program, memory can be understood as a long tape of bytes,  
-
 and the program can read from or write to certain places on the tape.  
-
 There are two concepts that we need to know:  
-
 - address, an integer that specifies a place on the tape
 - data, the byte stored in each place on the tape
 
