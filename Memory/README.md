@@ -31,17 +31,29 @@ memory segments
      
 ![memorySegments](https://github.com/Youcheng/ServerTuning/blob/master/Memory/memorySegments.png)
 
+code segment
+------------
 
+static segment
+--------------
+    The static segment contains global variables which cannot be resized 
+    and the memory cannot be freed while the program runs.
+ 
 stack segment
 -------------
     There is one stack frame per function call.
     A stack frame consists of Arguments, Local variables,  Return address.
     In reality, stack frames hold other information such as CPU states.
-    Since the memory layout of the stack frame is fixed, 
-    the size of variables cannot grow or shrink.
+    The stack segment contains local variables that have fixed sizes, 
+    and will be automatically freed after the function ends.
     The return address is used to indicate where to continue after the function is done.
 ![callStackAnimation](https://github.com/Youcheng/ServerTuning/blob/master/Memory/callStackAnimation.gif)
 
+heap segment
+------------
+    Memory in the heap segment is managed through the standard library that is provided with the compiler. 
+    The memory manager in the standard library allocates a pool of memory in advance. 
+    This is a continuous area of memory which is split up into smaller chunks for each memory allocation.
 
 
 process
