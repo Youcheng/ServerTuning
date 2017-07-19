@@ -28,8 +28,11 @@ memory segments
     The areas between segments are not allocated for the running program. 
     Access to these areas is not allowed, and is called a segmentation fault. 
     In such cases, the OS will typically abort the program.
+    
+    
 ![memorySegments](https://github.com/Youcheng/ServerTuning/blob/master/Memory/memorySegments.png)
 
+![callStackAnimation](https://github.com/Youcheng/ServerTuning/blob/master/Memory/callStackAnimation.gif)
 
 
 process
