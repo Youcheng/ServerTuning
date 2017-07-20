@@ -82,7 +82,7 @@ workflow for reading files using memory mapping
        If the file is already present in the page cache, the OS skips the load from disk, which results in a significant performance gain.    
     b) The OS creates a virtual-to-physical memory mapping.  
     c) The process uses the record data referred to by the rec variable directly.      
-![readingFileUsingMemoryMapping](https://github.com/Youcheng/ServerTuning/blob/master/TechniquesForPeformance/pictures/readingFileUsingMemoryMapping.png)  
+![readingFileUsingMemoryMapping](https://github.com/Youcheng/ServerTuning/blob/master/OSTechniquesForPeformance/pictures/readingFileUsingMemoryMapping.png)  
      
       
 demand load
@@ -98,7 +98,7 @@ how does demand load work
     Instead of creating the virtual-to-physical memory mappings, 
     the OS leaves the page table entry marked as “unmapped”, 
     and continues executing the process.
-![unmappedPageTable](https://github.com/Youcheng/ServerTuning/blob/master/TechniquesForPeformance/pictures/unmappedPageTable.png)  
+![unmappedPageTable](https://github.com/Youcheng/ServerTuning/blob/master/OSTechniquesForPeformance/pictures/unmappedPageTable.png)  
 
 
     The process, however, assumes that the memory mapping is set up, 
@@ -127,7 +127,7 @@ how does demand load work
     the process gets resumed and runs the memory access instruction again. 
     The process does not need to be aware of all of the OS work that happened. 
     It can simply expect that the memory mapping is available for use at any time.
-![demandLoad](https://github.com/Youcheng/ServerTuning/blob/master/TechniquesForPeformance/pictures/demandLoad.png) 
+![demandLoad](https://github.com/Youcheng/ServerTuning/blob/master/OSTechniquesForPeformance/pictures/demandLoad.png) 
 
 
 
@@ -139,7 +139,7 @@ The same files may be accessed by multiple processes simultaneously.
     The two processes have their own virtual memory spaces, 
     and each has a mapping to the physical memory address in the page cache. 
     The mappings are both for the same file.
-![pageSharingByProcesses](https://github.com/Youcheng/ServerTuning/blob/master/TechniquesForPeformance/pictures/pageSharingByProcesses.png) 
+![pageSharingByProcesses](https://github.com/Youcheng/ServerTuning/blob/master/OSTechniquesForPeformance/pictures/pageSharingByProcesses.png) 
 
 
     When creating memory mappings, we can set the permission of the mapping.
@@ -161,7 +161,7 @@ how does write with private flag work
     In order to achieve this result, the OS uses an algorithm called “copy-on-write”. 
     Let's assume that there are two processes that map the same file with the above settings, 
     process A and process B. The memory looks like the following diagram. 
-![copyOnWriteBeforeWrite](https://github.com/Youcheng/ServerTuning/blob/master/TechniquesForPeformance/pictures/copyOnWriteBeforeWrite.png) 
+![copyOnWriteBeforeWrite](https://github.com/Youcheng/ServerTuning/blob/master/OSTechniquesForPeformance/pictures/copyOnWriteBeforeWrite.png) 
 
     Although we want to have read and write access, 
     the OS actually creates the memory mappings with read only permissions at first. 
@@ -179,5 +179,5 @@ how does write with private flag work
     The new memory page (light red) has read and write permissions in the page table entry. 
     The process that was paused at the write instruction is resumed, and the write access succeeds. 
     From the process’ point of view, it looks like the memory was always writable!
-![copyOnWriteAfterWrite](https://github.com/Youcheng/ServerTuning/blob/master/TechniquesForPeformance/pictures/copyOnWriteAfterWrite.png) 
+![copyOnWriteAfterWrite](https://github.com/Youcheng/ServerTuning/blob/master/OSTechniquesForPeformance/pictures/copyOnWriteAfterWrite.png) 
     
