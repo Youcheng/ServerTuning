@@ -128,3 +128,56 @@ how does demand load work
     The process does not need to be aware of all of the OS work that happened. 
     It can simply expect that the memory mapping is available for use at any time.
 ![demandLoad](https://github.com/Youcheng/ServerTuning/blob/master/TechniquesForPeformance/pictures/demandLoad.png) 
+
+
+
+page sharing
+============
+With the page cache, we can keep files that were recently accessed in memory to increase performance.   
+The same files may be accessed by multiple processes simultaneously.
+ 
+    The two processes have their own virtual memory spaces, 
+    and each has a mapping to the physical memory address in the page cache. 
+    The mappings are both for the same file.
+![pageSharingByProcesses](https://github.com/Youcheng/ServerTuning/blob/master/TechniquesForPeformance/pictures/pageSharingByProcesses.png) 
+
+
+    When creating memory mappings, we can set the permission of the mapping.
+    
+    The permission can be set to read only. 
+    When the process attempts write access to read only pages, 
+    the MMU raises a special exception and informs the OS to handle the failure. 
+    Typically, the OS aborts the process.
+    
+    The permission can also be set to read and write. When the process attempts write access, the memory is updated. 
+    There are additional flags that we can specify if the updates to memory should be “private” or “shared”. 
+    When we specify the “shared” flag, the updates to memory are carried through to the underlying file on disk, 
+    and are available to other processes that map the same file. 
+    When we specify the “private” flag, the updates to the data in memory are made only in the process’ virtual memory 
+    and are not reflected in the underlying file on disk, nor are they visible to other processes.
+    
+how does write with private flag work
+-------------------------------------
+    In order to achieve this result, the OS uses an algorithm called “copy-on-write”. 
+    Let's assume that there are two processes that map the same file with the above settings, 
+    process A and process B. The memory looks like the following diagram. 
+![copyOnWriteBeforeWrite](https://github.com/Youcheng/ServerTuning/blob/master/TechniquesForPeformance/pictures/copyOnWriteBeforeWrite.png) 
+
+    Although we want to have read and write access, 
+    the OS actually creates the memory mappings with read only permissions at first. 
+    The two processes can read from the memory through their own virtual memory space. 
+    What happens when process B attempts to write to a memory address for the memory mapping at this point?
+    The MMU informs the OS that there was a page fault. 
+    The OS knows that this is due to a write access to a read only page. 
+    The OS first checks whether this was due to an actual illegal write instruction, 
+    or whether the process had, in fact, requested write permissions for this memory. 
+    In the latter case, the OS executes the copy-on-write algorithm. 
+    While the process is paused, the OS: 
+    (1) allocates another memory page,
+    (2) copies the content of the original page that was accessed,
+    (3) remaps the virtual-to-physical memory mapping for the page that was accessed
+    The new memory page (light red) has read and write permissions in the page table entry. 
+    The process that was paused at the write instruction is resumed, and the write access succeeds. 
+    From the process’ point of view, it looks like the memory was always writable!
+![copyOnWriteAfterWrite](https://github.com/Youcheng/ServerTuning/blob/master/TechniquesForPeformance/pictures/copyOnWriteAfterWrite.png) 
+    
