@@ -151,6 +151,10 @@ context switch
     
 scheduling algorithm
 --------------------
+    SCHED_FIFO (maxPriority/min 0/0)
+    SCHED_OTHER (maxPriority/min 99/1)
+    SCHED_RR maxPriority/min 99/1)
+[Real-time group Scheduling](https://www.linkedin.com/pulse/20140629145049-21586023-understanding-linux-scheduling) - Good explanation
 
     
     

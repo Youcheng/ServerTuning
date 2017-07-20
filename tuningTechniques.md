@@ -31,4 +31,5 @@ disable realtime throttling
     Realtime throttling is a linux kernel feature that throttles realtime threads (SCHED_FIFO) to 95% of cpu time.
     We could disable it to give the accelerated threads full use of the cores.
     # echo -1 > /proc/sys/kernel/sched_rt_runtime_us
-[SCHED_FIFO and realtime throttling](https://lwn.net/Articles/296419/) - A good explanation
+[SCHED_FIFO and realtime throttling](https://lwn.net/Articles/296419/) - Good explanation
+[Real-time group Scheduling](https://www.linkedin.com/pulse/20140629145049-21586023-understanding-linux-scheduling) - Good explanation
