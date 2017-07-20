@@ -37,6 +37,8 @@ and increases the overall performance.
     
 memory mapping
 ==============
+how to read file to process virtual memory without memory mapping
+-----------------------------------------------------------------
 - Disk-to-RAM-copy  
   copy data from hard disk to page cache
 - RAM-to-RAM-copy  
@@ -81,4 +83,48 @@ workflow for reading files using memory mapping
     b) The OS creates a virtual-to-physical memory mapping.  
     c) The process uses the record data referred to by the rec variable directly.      
 ![readingFileUsingMemoryMapping](https://github.com/Youcheng/ServerTuning/blob/master/TechniquesForPeformance/pictures/readingFileUsingMemoryMapping.png)  
+     
       
+demand load
+==============   
+Partial loading and skips unnecessary pages from being loaded.   
+
+how does demand load work
+------------------------
+    When the memory mapping system call is invoked, 
+    the OS allocates the pages in the process’ virtual memory space. 
+    From the programmer’s point of view, the OS creates a virtual-to-physical memory mapping,
+    but the OS actually defers that work. 
+    Instead of creating the virtual-to-physical memory mappings, 
+    the OS leaves the page table entry marked as “unmapped”, 
+    and continues executing the process.
+![unmappedPageTable](https://github.com/Youcheng/ServerTuning/blob/master/TechniquesForPeformance/pictures/unmappedPageTable.png)  
+
+
+    The process, however, assumes that the memory mapping is set up, 
+    and will access the memory of the mapping.
+    
+    Let’s say it accesses an address in the first page.
+    In regular cases where virtual-to-physical memory mappings exist, 
+    the MMU (a subsystem of the CPU) can look up the physical memory page that 
+    corresponds to a virtual memory page. However, in this case, 
+    the virtual memory page exists but the page table entry does not 
+    have a corresponding physical memory page. 
+    
+    Therefore, the MMU will fail when it tries to look up the physical memory page, 
+    and raise a special exception that is called a page fault. 
+    The MMU will send this exception to the OS to handle the failure. 
+    
+    The OS knows that the page fault is due to the physical page being absent, 
+    and it also knows that the original file is on the disk. 
+    
+    The OS finds an unused physical memory page and loads the data into it from disk, 
+    then updates the page table entry by setting up the virtual-to-physical memory mapping. 
+    Typically, the OS will use DMA (direct memory access) modules for the data transfer.
+    
+    The process gets paused when it accesses an address in the first page. 
+    After the MMU and OS handle the missing physical memory page, 
+    the process gets resumed and runs the memory access instruction again. 
+    The process does not need to be aware of all of the OS work that happened. 
+    It can simply expect that the memory mapping is available for use at any time.
+![demandLoad](https://github.com/Youcheng/ServerTuning/blob/master/TechniquesForPeformance/pictures/demandLoad.png) 
