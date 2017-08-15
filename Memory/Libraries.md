@@ -21,4 +21,13 @@ linking
 
 static linking
 --------------
+        Static linking happens at compile time.
+        At step (1), the compiler reads the source file (A), 
+        generates compiled code and data,
+        and stores it in the compiled binary file (B).
+
+        We prepare the precompiled library file (C)At step (2),
+        the linker takes the two binary files (B) and (C), 
+        links them together, and outputs the executable file (D)
+
 ![staticLinking](https://github.com/Youcheng/ServerTuning/blob/master/Memory/pictures/staticLinking.png)
