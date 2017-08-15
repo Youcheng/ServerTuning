@@ -48,7 +48,7 @@ dynamic linking
 
 ![dynamicLinking](https://github.com/Youcheng/ServerTuning/blob/master/Memory/pictures/dynamicLinking.png)
 
-what happens when multiple processes are using the same dynamic libraries?
+what happens when multiple processes are using the same dynamic library?
 --------------------------------------------------------------------------
         When we use libraries with dynamic linking, there can be multiple code and static segments in a process. 
         The segments of the libraries can be shared with other processes through page caching, 
@@ -64,4 +64,4 @@ what happens when multiple processes are using the same dynamic libraries?
         the page will become unshared due to the copy-on-write feature (the light red part in the figure above).
         
 
-![dynamicLibShare](https://github.com/Youcheng/ServerTuning/blob/master/Memory/pictures/dynamicLibShare.png)
+![dynamicLibSharing](https://github.com/Youcheng/ServerTuning/blob/master/Memory/pictures/dynamicLibSharing.png)
