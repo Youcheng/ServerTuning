@@ -17,3 +17,8 @@ linking
 -------
 - static linking
 - dynamic linking
+
+
+static linking
+--------------
+![staticLinking](https://github.com/Youcheng/ServerTuning/blob/master/Memory/pictures/staticLinking.png)
