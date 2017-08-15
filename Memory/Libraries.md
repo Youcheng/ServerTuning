@@ -50,8 +50,6 @@ dynamic linking
 
 what happens when multiple processes are using the same dynamic library?
 --------------------------------------------------------------------------
-[page cache and memory mapping](https://github.com/Youcheng/ServerTuning/blob/master/OSTechniquesForPeformance/README.md)
-
         When we use libraries with dynamic linking, there can be multiple code and static segments in a process. 
         The segments of the libraries can be shared with other processes through page cache, 
         and this library structure is called shared libraries (or shared objects, dynamic shared objects, dynamic-link libraries, etc.)
@@ -64,6 +62,7 @@ what happens when multiple processes are using the same dynamic library?
         The static segment of the shared library is also loaded via memory mapping, but the permission is set to read-write.
         At program load time, the pages of the static segment will be shared, and when a write access occurs, 
         the page will become unshared due to the copy-on-write feature (the light red part in the figure above).
-        
+        
+[page cache and memory mapping](https://github.com/Youcheng/ServerTuning/blob/master/OSTechniquesForPeformance/README.md)
 
 ![dynamicLibSharing](https://github.com/Youcheng/ServerTuning/blob/master/Memory/pictures/dynamicLibSharing.png)
