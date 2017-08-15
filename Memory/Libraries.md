@@ -66,3 +66,32 @@ what happens when multiple processes are using the same dynamic library?
 [page cache and memory mapping](https://github.com/Youcheng/ServerTuning/blob/master/OSTechniquesForPeformance/README.md)
 
 ![dynamicLibSharing](https://github.com/Youcheng/ServerTuning/blob/master/Memory/pictures/dynamicLibSharing.png)
+
+
+relocation
+----------
+```
+extern int g;
+
+int func(int x) {
+    return g + x;
+}
+
+```
+The first line of the code above declares that a global variable g is defined somewhere else. 
+The global variable may be defined in another .c source file or in a shared library.
+Assume that each bullet point is a machine code instruction, and that R1, R2, ... are processor registers, 
+which can be used to hold temporary data.
+
+1. get the address of x and store it in R1
+    There is a special processor register that is called the stack register which stores the top address of the call stack. 
+    The compiler knows the size of all of the items that go into the stack frames. 
+    The addresses of all of the items in the call stack can be referred to by an offset from the stack register.0
+    Therefore, the compiler can generate machine code that accesses the function argument x.
+
+2. get the value from that address and store it in R2
+3. get the address of g and store it in R3
+4. get the value from that address and store it in R4
+5. add R2 and R4 and store the result in R5
+6. return R5
+
