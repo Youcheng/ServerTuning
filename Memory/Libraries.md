@@ -93,6 +93,23 @@ which can be used to hold temporary data.
 2. get the value from that address and store it in R2
 3. get the address of g and store it in R3
 4. get the value from that address and store it in R4
+    Unlike the function argument x, the compiler cannot resolve the address of g at compile time, 
+    and the machine code instruction to get the address of g cannot be completed at compile time.
+    
+    Instead the compiler leaves a “relocation”, which is an instruction for the loader to patch memory after loading. 
+    A relocation consists of a global variable name and the location to be patched, 
+    and is stored in compiled binary and executable files. In english, relocation means 
+    finding the address of g and update the third instruction of func with it.
+    
+    In order for the loader to find the addresses of the global variables at runtime, 
+    the compiler also stores the name and offset of all internal global variables in compiled binary and executable files:
+    variable name: g; location: offset 24 bytes from the beginning of the static segment.
+    
+    The compiler stores all relocations in the relocation table in the executable file, 
+    and lets the loader handle them when the addresses of the static segments have been fixed in the running processes.
+
+    The loader will use symbol tables and relocation tables to patch the process memory after addresses are fixed.
+    
 5. add R2 and R4 and store the result in R5
 6. return R5
 
