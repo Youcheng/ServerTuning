@@ -70,6 +70,9 @@ what happens when multiple processes are using the same dynamic library?
 
 relocation
 ----------
+The compiler leaves relocations for variables that have addresses that are unknown at compile time, 
+and the loader resolves them at load time using the symbol table.
+
 ```
 extern int g;
 
@@ -116,3 +119,8 @@ which can be used to hold temporary data.
 5. add R2 and R4 and store the result in R5
 6. return R5
 
+Position Independent Code
+-------------------------
+The loader updated the code segment due to a relocation. 
+However, we want the code segment to be read-only so that we can take advantage of sharing pages across processes. 
+That is why we need this PIC techinique.
