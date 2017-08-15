@@ -50,15 +50,15 @@ dynamic linking
 
 what happens when multiple processes are using the same dynamic library?
 --------------------------------------------------------------------------
-        When we use libraries with dynamic linking, there can be multiple code and static segments in a process. 
-        The segments of the libraries can be shared with other processes through page cache, 
+        When we use libraries with dynamic linking, there can be multiple code and static segments in a process. 
+        The segments of the libraries can be shared with other processes through page cache, 
         and this library structure is called shared libraries (or shared objects, dynamic shared objects, dynamic-link libraries, etc.)
-        
-        The code segment of the shared library is loaded via memory mapping and the permission is set to read only. 
+
+        The code segment of the shared library is loaded via memory mapping and the permission is set to read only. 
         It is loaded into the page cache at most once, and shared across the processes that use the library. 
         This significantly reduces memory consumption and program load time. 
         (Note: some operating systems are not equipped with this feature).
-        
+
         The static segment of the shared library is also loaded via memory mapping, but the permission is set to read-write.
         At program load time, the pages of the static segment will be shared, and when a write access occurs, 
         the page will become unshared due to the copy-on-write feature (the light red part in the figure above).
