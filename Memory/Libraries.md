@@ -83,16 +83,19 @@ The global variable may be defined in another .c source file or in a shared libr
 Assume that each bullet point is a machine code instruction, and that R1, R2, ... are processor registers, 
 which can be used to hold temporary data.
 
-1. get the address of x and store it in R1   
+1. get the address of x and store it in R1 
+```
   There is a special processor register that is called the stack register which stores the top address of the call stack. 
   The compiler knows the size of all of the items that go into the stack frames. 
   The addresses of all of the items in the call stack can be referred to by an offset from the stack register.0
   Therefore, the compiler can generate machine code that accesses the function argument x.
+```  
   ![staticOffset](https://github.com/Youcheng/ServerTuning/blob/master/Memory/pictures/stackOffset.png)
 
 2. get the value from that address and store it in R2
 3. get the address of g and store it in R3
 4. get the value from that address and store it in R4
+```
     Unlike the function argument x, the compiler cannot resolve the address of g at compile time, 
     and the machine code instruction to get the address of g cannot be completed at compile time.
     
@@ -109,7 +112,7 @@ which can be used to hold temporary data.
     and lets the loader handle them when the addresses of the static segments have been fixed in the running processes.
 
     The loader will use symbol tables and relocation tables to patch the process memory after addresses are fixed.
-    
+ ```   
 5. add R2 and R4 and store the result in R5
 6. return R5
 
