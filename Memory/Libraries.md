@@ -51,7 +51,7 @@ dynamic linking
 what happens when multiple processes are using the same dynamic library?
 --------------------------------------------------------------------------
         When we use libraries with dynamic linking, there can be multiple code and static segments in a process. 
-        The segments of the libraries can be shared with other processes through page caching, 
+        The segments of the libraries can be shared with other processes through [page cache](../../OSTech/), 
         and this library structure is called shared libraries (or shared objects, dynamic shared objects, dynamic-link libraries, etc.)
         
         The code segment of the shared library is loaded via memory mapping and the permission is set to read only. 
