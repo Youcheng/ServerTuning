@@ -133,12 +133,20 @@ Without direct access there is no need for relocations for the code segment.
 
 How Positions Independent Code works?
 -------------------------------------
+```
 In order to generate code that indirectly accesses variables, 
 the compiler introduces a special table called the global offset table (GOT) for each compiled binary file. 
 The executable file has a GOT, and each shared object has one as well. 
 The GOT is placed in the static segment along with the global variables. 
 There is one entry per external global variable in the GOT.
 
+When the PIC option is specified, the compiler generates position independent code using the GOT, 
+which can be accessed without relocations. 
+The GOT entries contain the addresses of external variables and are subject to relocations. 
+Since the GOT is in the static segment, updating it for relocations meets our requirements: 
+the code segments of shared libraries remain read-only, 
+and can be effectively shared across processes through the page cache.
+```
 ![PIC](https://github.com/Youcheng/ServerTuning/blob/master/Memory/pictures/PIC.png)
   
 ```
@@ -166,5 +174,18 @@ The compiler generates machine code that accesses the external variable g in the
 - get the value at that address and store it in R2; this is the address of g … (2)
 - get the value of g from that address and store it in R3
 
-CPUs have an instruction register (sometimes called “program counter”, “instruction pointer”, etc.) that holds the address of the machine code instruction that the CPU is currently running, and therefore the compiler can generate code with an offset from the current instruction address. Assuming that the instruction register is IR, the machine code instruction for (1) will look something like this:add IR and Z and store the result in R1. Regardless of the address assigned to X at runtime, the process can access the GOT by using the offset from the current instruction.
+CPUs have an instruction register (sometimes called “program counter”, “instruction pointer”, etc.) 
+that holds the address of the machine code instruction that the CPU is currently running, 
+and therefore the compiler can generate code with an offset from the current instruction address. 
+Assuming that the instruction register is IR, the machine code instruction for (1) will look something like this:
+add IR and Z and store the result in R1. 
+Regardless of the address assigned to X at runtime, 
+the process can access the GOT by using the offset from the current instruction.
+
+The code for (1) can be resolved with the offset from the instruction register. 
+Next is the code for (2). The GOT is in the static segment, 
+and it contains the address of the external variables.
+
+For the variable g, the compiler will leave a relocation for the loader 
+to put the address of `g` into the GOT entry  in order to resolve the address.
 ```
