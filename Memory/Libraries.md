@@ -138,7 +138,8 @@ the compiler introduces a special table called the global offset table (GOT) for
 The executable file has a GOT, and each shared object has one as well. 
 The GOT is placed in the static segment along with the global variables. 
 There is one entry per external global variable in the GOT.
-  ![PIC](https://github.com/Youcheng/ServerTuning/blob/master/Memory/pictures/PIC.png)
+
+![PIC](https://github.com/Youcheng/ServerTuning/blob/master/Memory/pictures/PIC.png)
   
 ```
 extern int g;
@@ -165,5 +166,5 @@ The compiler generates machine code that accesses the external variable g in the
 - get the value at that address and store it in R2; this is the address of g … (2)
 - get the value of g from that address and store it in R3
 
-CPUs have an instruction register (sometimes called “program counter”, “instruction pointer”, etc.) that holds the address of the machine code instruction that the CPU is currently running, and therefore the compiler can generate code with an offset from the current instruction address. Assuming that the instruction register is IR, the machine code instruction for (1) will look something like this:add IR and Z and store the result in R1Regardless of the address assigned to X at runtime, the process can access the GOT by using the offset from the current instruction.
+CPUs have an instruction register (sometimes called “program counter”, “instruction pointer”, etc.) that holds the address of the machine code instruction that the CPU is currently running, and therefore the compiler can generate code with an offset from the current instruction address. Assuming that the instruction register is IR, the machine code instruction for (1) will look something like this:add IR and Z and store the result in R1. Regardless of the address assigned to X at runtime, the process can access the GOT by using the offset from the current instruction.
 ```
