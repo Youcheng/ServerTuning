@@ -119,8 +119,51 @@ which can be used to hold temporary data.
 5. add R2 and R4 and store the result in R5
 6. return R5
 
-Position Independent Code
--------------------------
+What is Position Independent Code?
+----------------------------------
 The loader updated the code segment due to a relocation. 
 However, we want the code segment to be read-only so that we can take advantage of sharing pages across processes. 
-That is why we need this PIC techinique.
+That is why we need this PIC techinique. What we need is 1) code segments need to be read-only 2) static segments can be read-write.
+
+Compilers have a special option to generate machine code that does not have any relocations for code segments. 
+This option is called position independent code (PIC). 
+For example, the option flag is -fPIC for the GNU compiler gcc, and -fpic for the the Intel compiler.
+The idea of PIC is to generate code that makes indirect access to external variables. 
+Without direct access there is no need for relocations for the code segment.
+
+How Positions Independent Code works?
+-------------------------------------
+In order to generate code that indirectly accesses variables, 
+the compiler introduces a special table called the global offset table (GOT) for each compiled binary file. 
+The executable file has a GOT, and each shared object has one as well. 
+The GOT is placed in the static segment along with the global variables. 
+There is one entry per external global variable in the GOT.
+  ![PIC](https://github.com/Youcheng/ServerTuning/blob/master/Memory/pictures/PIC.png)
+  
+```
+extern int g;
+extern int h;
+
+int func(int x) {
+    return g + x;
+}
+
+int calc(int x, int y) {
+    int z;
+    z = 2 * x + y;
+    return g + h + z;
+}
+
+
+The addresses X and Y are determined at runtime by the loader, 
+which means that the compiler cannot resolve them at compile time. 
+However, since the compiler generates the code and data, it knows the offset Z, 
+which is the offset from the code to the GOT entry.
+
+The compiler generates machine code that accesses the external variable g in the following way:
+- get the address of the GOT entry for g and store it in R1 … (1)
+- get the value at that address and store it in R2; this is the address of g … (2)
+- get the value of g from that address and store it in R3
+
+CPUs have an instruction register (sometimes called “program counter”, “instruction pointer”, etc.) that holds the address of the machine code instruction that the CPU is currently running, and therefore the compiler can generate code with an offset from the current instruction address. Assuming that the instruction register is IR, the machine code instruction for (1) will look something like this:add IR and Z and store the result in R1Regardless of the address assigned to X at runtime, the process can access the GOT by using the offset from the current instruction.
+```
