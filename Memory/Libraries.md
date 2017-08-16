@@ -224,7 +224,25 @@ updates the PLT entry with the found address, and then jumps to it.
 
 Once the PLT entry has been updated, the flow is different for the second time that sqrt is called. 
 Let’s say the calc function is called again and it calls sqrt. The CPU’s instruction register jump to
-the 1st PLT entry, then the `sqrt` function 
+the 1st PLT entry, then the `sqrt` function.
+
+The PLT is in the static segment, which may be updated, and the code segment contains only position independent code that does not require relocations. Making the resolution happen only the first time the function is called skips unnecessary relocations. In the source file that we used as an example, there was a function call to pow(), which never happened. Since the PLT entry for pow() was never used, it was not updated, and saved time.
 ```
 ![ProdecureLinkageTable0](https://github.com/Youcheng/ServerTuning/blob/master/Memory/pictures/ProdecureLinkageTable0.png)
 ![ProdecureLinkageTable](https://github.com/Youcheng/ServerTuning/blob/master/Memory/pictures/ProdecureLinkageTable.png)
+
+
+comparision of static linking and dynamic linking
+-------------------------------------------------
+```
+Static linking places libraries into the executable file, 
+while dynamic linking keeps library files separate from the executable file. 
+
+In dynamic linking, the compiler cannot resolve addresses for external global variable access 
+and function calls at compile time, and must leave relocations which are updated at runtime 
+after the addresses are fixed. 
+By specifying the PIC option, the compiler can generate machine code 
+that uses GOTs for global variables and PLTs for external function calls
+which results in code segments that have no relocations, and are therefore effectively shareable. 
+The relocations themselves are placed into static segments, which allows them to be updated.
+```
