@@ -184,8 +184,46 @@ the process can access the GOT by using the offset from the current instruction.
 
 The code for (1) can be resolved with the offset from the instruction register. 
 Next is the code for (2). The GOT is in the static segment, 
+
 and it contains the address of the external variables.
 
 For the variable g, the compiler will leave a relocation for the loader 
 to put the address of `g` into the GOT entry  in order to resolve the address.
 ```
+
+prodedure linkage table
+-----------------------
+```
+Similar to using the GOT for external global variables, 
+the compiler generates code that uses a procedure linkage table (PLT) for external function calls. 
+PLTs are placed into the static segments, and each entry in a PLT is a JUMP instruction.
+By default, all JUMP instructions will jump to a special function that we’ll call the lazy_bind function. 
+```
+
+```
+For example, given a source file like the following:
+double sqrt();
+double pow();
+
+double calc(void) {
+    double x;
+    x = sqrt(2.0);  // [*1]
+    if (x > 10.0) {
+        x = pow(2.0, 10.0);
+    }
+    return x;
+}
+
+The functions sqrt and pow are defined in a shared library. 
+After compiling the source file above, the executable file has a PLT that looks like the following:
+PLT #1: JUMP <lazy_bind>
+PLT #2: JUMP <lazy_bind>
+
+The lazy_bind function is a relocation resolution function that finds the address of the target function,  
+updates the PLT entry with the found address, and then jumps to it.
+
+Once the PLT entry has been updated, the flow is different for the second time that sqrt is called. 
+Let’s say the calc function is called again and it calls sqrt. The CPU’s instruction register jump to
+the 1st PLT entry, then the `sqrt` function 
+```
+![ProdecureLinkageTable](https://github.com/Youcheng/ServerTuning/blob/master/Memory/pictures/ProdecureLinkageTable.png)
