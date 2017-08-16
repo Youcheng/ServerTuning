@@ -226,4 +226,5 @@ Once the PLT entry has been updated, the flow is different for the second time t
 Let’s say the calc function is called again and it calls sqrt. The CPU’s instruction register jump to
 the 1st PLT entry, then the `sqrt` function 
 ```
+![ProdecureLinkageTable0](https://github.com/Youcheng/ServerTuning/blob/master/Memory/pictures/ProdecureLinkageTable0.png)
 ![ProdecureLinkageTable](https://github.com/Youcheng/ServerTuning/blob/master/Memory/pictures/ProdecureLinkageTable.png)
